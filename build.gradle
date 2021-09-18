@@ -25,11 +25,34 @@ sourceSets {
 repositories {
     mavenLocal()
     jcenter()
+    maven { url 'https://kotlin.bintray.com/ktor' }
+    maven { url 'https://kotlin.bintray.com/kotlin-js-wrappers' }
+    maven {
+        url 'https://repo.maven.apache.org/maven2'
+        name 'Maven Central'
+    }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile).all {
+    kotlinOptions {
+        jvmTarget = "1.8"
+    }
 }
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     implementation "io.ktor:ktor-server-netty:$ktor_version"
     implementation "ch.qos.logback:logback-classic:$logback_version"
+    implementation "io.ktor:ktor-server-core:$ktor_version"
+    implementation "io.ktor:ktor-html-builder:$ktor_version"
+    implementation "org.jetbrains:kotlin-css-jvm:1.0.0-pre.148-kotlin-1.4.30"
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
+    implementation "io.ktor:ktor-auth:$ktor_version"
+    implementation "io.ktor:ktor-gson:$ktor_version"
+    implementation 'org.litote.kmongo:kmongo:4.2.8'
+    implementation 'org.litote.kmongo:kmongo-coroutine:4.2.8'
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt'
+    implementation 'commons-codec:commons-codec:20041127.091804'
+    implementation "io.ktor:ktor-network-tls:$ktor_version"
+    implementation "io.ktor:ktor-freemarker:$ktor_version"
 }
