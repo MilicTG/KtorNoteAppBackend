@@ -49,8 +49,8 @@ dependencies {
     testImplementation "io.ktor:ktor-server-tests:$ktor_version"
     implementation "io.ktor:ktor-auth:$ktor_version"
     implementation "io.ktor:ktor-gson:$ktor_version"
-    implementation 'org.litote.kmongo:kmongo:4.2.8'
-    implementation 'org.litote.kmongo:kmongo-coroutine:4.2.8'
+    implementation 'org.litote.kmongo:kmongo:4.3.0'
+    implementation 'org.litote.kmongo:kmongo-coroutine:4.3.0'
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2-native-mt'
     implementation 'commons-codec:commons-codec:20041127.091804'
     implementation "io.ktor:ktor-network-tls:$ktor_version"
