@@ -2,6 +2,7 @@ package dev.milic
 
 import dev.milic.data.checkPasswordForEmail
 import dev.milic.routes.loginRoute
+import dev.milic.routes.noteRoutes
 import dev.milic.routes.registerRoute
 import io.ktor.application.*
 import io.ktor.auth.*
@@ -18,11 +19,6 @@ fun Application.module(testing: Boolean = false) {
     install(DefaultHeaders)
     //Log all HTTP requests and responses
     install(CallLogging)
-    //Define URL endpoints
-    install(Routing) {
-        registerRoute()
-        loginRoute()
-    }
     //Define a response type JSON
     install(ContentNegotiation) {
         gson {
@@ -31,6 +27,12 @@ fun Application.module(testing: Boolean = false) {
     }
     install(Authentication) {
         configureAuth()
+    }
+    //Define URL endpoints
+    install(Routing) {
+        registerRoute()
+        loginRoute()
+        noteRoutes()
     }
 }
 

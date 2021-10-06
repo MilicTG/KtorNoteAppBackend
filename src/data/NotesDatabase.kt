@@ -2,6 +2,7 @@ package dev.milic.data
 
 import dev.milic.data.collections.Note
 import dev.milic.data.collections.User
+import org.litote.kmongo.contains
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
@@ -25,4 +26,9 @@ suspend fun checkIfUserExists(email: String): Boolean {
 suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boolean {
     val actualPassword = users.findOne(User::email eq email)?.password ?: return false
     return actualPassword == passwordToCheck
+}
+
+//Get all Notes for User
+suspend fun getNotesForUser(email: String): List<Note>{
+    return notes.find(Note::owners contains email).toList()
 }
