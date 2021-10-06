@@ -20,3 +20,9 @@ suspend fun registerUser(user: User): Boolean {
 suspend fun checkIfUserExists(email: String): Boolean {
     return users.findOne(filter = User::email eq email) != null
 }
+
+//Check if user with password exist or return false
+suspend fun checkPasswordForEmail(email: String, passwordToCheck: String): Boolean {
+    val actualPassword = users.findOne(User::email eq email)?.password ?: return false
+    return actualPassword == passwordToCheck
+}
