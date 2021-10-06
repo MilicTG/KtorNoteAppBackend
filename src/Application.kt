@@ -1,8 +1,10 @@
 package dev.milic
 
+import dev.milic.data.checkPasswordForEmail
 import dev.milic.routes.loginRoute
 import dev.milic.routes.registerRoute
 import io.ktor.application.*
+import io.ktor.auth.*
 import io.ktor.features.*
 import io.ktor.gson.*
 import io.ktor.routing.*
@@ -25,6 +27,27 @@ fun Application.module(testing: Boolean = false) {
     install(ContentNegotiation) {
         gson {
             setPrettyPrinting()
+        }
+    }
+    install(Authentication) {
+        configureAuth()
+    }
+}
+
+private fun Authentication.Configuration.configureAuth() {
+    basic {
+        realm = "Note Server"
+        validate { credentials ->
+            val email = credentials.name
+            val password = credentials.password
+
+            if (checkPasswordForEmail(
+                    email = email,
+                    passwordToCheck = password
+                )
+            ) {
+                UserIdPrincipal(name = email)
+            } else null
         }
     }
 }
