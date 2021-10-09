@@ -6,9 +6,10 @@ import org.litote.kmongo.contains
 import org.litote.kmongo.coroutine.coroutine
 import org.litote.kmongo.eq
 import org.litote.kmongo.reactivestreams.KMongo
+import org.litote.kmongo.setValue
 
 private val client = KMongo.createClient().coroutine
-private val database = client.getDatabase("NotesDatabase")
+private val database = client.getDatabase(name = "NotesDatabase")
 private val users = database.getCollection<User>()
 private val notes = database.getCollection<Note>()
 
@@ -40,4 +41,22 @@ suspend fun saveNote(note: Note): Boolean {
     } else {
         notes.insertOne(document = note).wasAcknowledged()
     }
+}
+
+//Remove user from note owners
+suspend fun deleteNoteForUser(email: String, noteId: String): Boolean {
+    val note = notes.findOne(Note::id eq noteId, Note::owners contains email)
+
+    //Check if note ha multiple owners and remove just email from owners list
+    note?.let { note ->
+        if (note.owners.size > 1) {
+            val newOwners = note.owners - email
+            val updateResult = notes.updateOne(
+                filter = Note::id eq note.id,
+                setValue(Note::owners, newOwners)
+            )
+            return updateResult.wasAcknowledged()
+        }
+        return notes.deleteOneById(note.id).wasAcknowledged()
+    } ?: return false
 }
